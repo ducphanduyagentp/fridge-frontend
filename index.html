@@ -32,7 +32,7 @@
             </template>
 
             <template #cell(actions)="data">
-              <item-action v-bind:id="data.item.id"></item-action>
+              <item-action v-bind:item="data.item"></item-action>
             </template>
           </b-table>
         </div>

@@ -1,9 +1,18 @@
 Vue.component('item-action', {
-    props: ['id'],
+    props: ['item'],
     template: `<b-button-group size="sm">
-    <b-button variant="warning" @click="alert(id)" class="mr-4"><b-icon icon="gear-fill"></b-icon> Edit</b-button>
-    <b-button variant="danger"><b-icon icon="trash-fill"></b-icon> Remove</b-button>
-    </b-button-group>`
+    <b-button variant="warning" @click="editItem(item)" class="mr-4"><b-icon icon="gear-fill"></b-icon> Edit</b-button>
+    <b-button variant="danger" @click="removeItem(item)"><b-icon icon="trash-fill"></b-icon> Remove</b-button>
+    </b-button-group>`,
+    methods: {
+      editItem: function (item) {
+        alert("Editing " + item.item_name);
+      },
+  
+      removeItem: function (item) {
+        alert("Removing " + item.item_name);
+      }
+    }
 })
 
 var app = new Vue({
