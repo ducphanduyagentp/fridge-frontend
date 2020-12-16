@@ -24,13 +24,21 @@ var app = new Vue({
       { key: 'quantity_unit', label: 'Quantity' },
       { key: 'actions', label: 'Actions' }
     ],
-    items: [
-      { id: 1, item_name: "bruh1", quantity: 20, unit: "unit1" },
-      { id: 2, item_name: "bruh2", quantity: 220, unit: "unit2" },
-      { id: 3, item_name: "bruh3", quantity: 120, unit: "unit3" },
-      { id: 3, item_name: "bruh3", quantity: 120, unit: "unit3" },
-      { id: 3, item_name: "bruh3", quantity: 120, unit: "unit3" },
-      { id: 3, item_name: "bruh3", quantity: 120, unit: "unit3" }
-    ]
+    items: []
+  },
+  methods: {
+    getItems() {
+      const path = "http://localhost:5000/getItems"
+      axios.get(path)
+        .then((res) => {
+          this.items = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+  },
+  created: function () {
+    this.getItems();
   }
 })
