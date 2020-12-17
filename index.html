@@ -14,30 +14,82 @@
 </head>
 <body>
     <div id='app'>
-      <template>
-        <div>
-          <b-table striped hover :fields="fields" :items="items" responsive="sm">
-            <!-- A virtual column -->
-            <template #cell(id)="data">
-              {{ data.index + 1 }}
-            </template>
-      
-            <!-- A custom formatted column -->
-            <template #cell(item_name)="data">
-              {{ data.item.item_name }}
-            </template>
-      
-            <!-- A virtual composite column -->
-            <template #cell(quantity_unit)="data">
-              {{ data.item.quantity }} {{ data.item.unit }}
-            </template>
+      <b-container class="mt-3">
+        <h1>The Fridge</h1>
+        <br><br>
 
-            <template #cell(actions)="data">
-              <item-action v-bind:item="data.item"></item-action>
-            </template>
-          </b-table>
-        </div>
-      </template>
+        <b-button variant="success" class="mb-3" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Item</b-button>
+        <b-modal ref="addItemModal" id="add-item-modal" title="Add Item" hide-footer>
+          <b-form @submit.prevent="submitAddBook" @reset="resetAddBook">
+            <b-form-group
+              id="form-item-name-group"
+              label="Item Name"
+              label-for="form-item-name-input">
+              <b-form-input
+                id="form-item-name-input"
+                type="text"
+                v-model="addItemForm.item_name"
+                required
+                placeholder="Enter Item Name">
+              </b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="form-quantity-group"
+              label="Quantity"
+              label-for="form-quantity-input">
+              <b-form-input
+                id="form-quantity-input"
+                type="number"
+                v-model="addItemForm.quantity"
+                required
+                placeholder="Enter Quantity">
+              </b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="form-unit-group"
+              label="Unit"
+              label-for="form-unit-input">
+              <b-form-input
+                id="form-unit-input"
+                type="text"
+                v-model="addItemForm.unit"
+                required
+                placeholder="Enter Unit">
+              </b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button type="reset" variant="danger">Reset</b-button>
+          </b-form>
+        </b-modal>
+
+        <template>
+          <div>
+            <b-table striped hover :fields="fields" :items="items" responsive="sm">
+              <!-- A virtual column -->
+              <template #cell(id)="data">
+                {{ data.index + 1 }}
+              </template>
+
+              <!-- A custom formatted column -->
+              <template #cell(item_name)="data">
+                {{ data.item.item_name }}
+              </template>
+
+              <!-- A virtual composite column -->
+              <template #cell(quantity_unit)="data">
+                {{ data.item.quantity }} {{ data.item.unit }}
+              </template>
+
+              <template #cell(actions)="data">
+                <item-action v-bind:item="data.item"></item-action>
+              </template>
+            </b-table>
+          </div>
+        </template>
+      </b-container>
     </div>
 
   <script src="app.js"></script>

@@ -24,18 +24,31 @@ var app = new Vue({
       { key: 'quantity_unit', label: 'Quantity' },
       { key: 'actions', label: 'Actions' }
     ],
-    items: []
+    items: [],
+    addItemForm: {
+      item_name: '',
+      quantity: 0,
+      unit: ''
+    }
   },
   methods: {
     getItems() {
-      const path = "http://localhost:5000/getItems"
+      const path = "http://localhost:5000/getItems";
       axios.get(path)
         .then((res) => {
           this.items = res.data;
         })
         .catch((error) => {
           console.log(error);
-        })
+        });
+    },
+    submitAddBook: function(evt) {
+      evt.preventDefault();
+      alert(1);
+    },
+    resetAddBook: function(evt) {
+      evt.preventDefault();
+      alert(2);
     }
   },
   created: function () {
