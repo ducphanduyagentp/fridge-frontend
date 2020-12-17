@@ -28,7 +28,9 @@ var app = new Vue({
       item_name: '',
       quantity: 0,
       unit: ''
-    }
+    },
+    updating: false,
+    current_id: -1
   },
   methods: {
     getItems() {
@@ -53,7 +55,21 @@ var app = new Vue({
         });
     },
     editItem(item) {
-      alert("Editing " + item.item_name);
+      this.updating = true;
+      this.editItemForm(item);
+      this.$refs.addItemModal.show();
+    },
+    editItemReal(payload) {
+      const path = "http://localhost:5000/editItem";
+      axios.post(path, payload)
+        .then((res) => {
+          this.getItems();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getItems();
+        });
+      this.updating = false;
     },
     removeItem(item) {
       const path = "http://localhost:5000/removeItem";
@@ -73,22 +89,38 @@ var app = new Vue({
       this.addItemForm.item_name = '';
       this.addItemForm.quantity = 0;
       this.addItemForm.unit = '';
+      this.current_id = -1;
     },
-    submitAddBook: function(evt) {
+    editItemForm(item) {
+      this.addItemForm.item_name = item.item_name;
+      this.addItemForm.quantity = item.quantity;
+      this.addItemForm.unit = item.unit;
+      this.current_id = item.id;
+    },
+    submitAddItem: function(evt) {
       evt.preventDefault();
-      this.$refs.addItemModal.hide();
-      const payload = {
+      var payload = {
         item_name: this.addItemForm.item_name,
         quantity: this.addItemForm.quantity,
-        unit: this.addItemForm.unit
+        unit: this.addItemForm.unit,
+        id: this.current_id
       };
-      this.addItem(payload);
+      if (!this.updating) {
+        this.addItem(payload);
+      } else {
+        this.editItemReal(payload);
+      }
+      this.$refs.addItemModal.hide();
       this.initItemForm();
     },
-    resetAddBook: function(evt) {
+    resetAddItem: function(evt) {
       evt.preventDefault();
       this.$refs.addItemModal.hide();
       this.initItemForm();
+    },
+    resetButton: function() {
+      this.updating = false;
+      this.current_id = -1;
     }
   },
   created: function () {

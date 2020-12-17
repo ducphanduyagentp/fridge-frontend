@@ -19,8 +19,8 @@
         <br><br>
 
         <b-button variant="success" class="mb-3" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Item</b-button>
-        <b-modal ref="addItemModal" id="add-item-modal" title="Add Item" hide-footer>
-          <b-form @submit.prevent="submitAddBook" @reset="resetAddBook">
+        <b-modal ref="addItemModal" id="add-item-modal" title="Add Item" @hide="resetButton" hide-footer>
+          <b-form @submit.prevent="submitAddItem" @reset="resetAddItem">
             <b-form-group
               id="form-item-name-group"
               label="Item Name"
@@ -60,7 +60,8 @@
               </b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
+            <b-button type="submit" variant="warning" v-else>Update</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </b-modal>
