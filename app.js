@@ -14,6 +14,22 @@ Vue.component('item-action', {
     }
 });
 
+Vue.component('receipe-action', {
+  props: ['receipe'],
+  template: `<b-button-group size="sm">
+  <b-button variant="warning" @click="editReceipe(receipe)" class="mr-4"><b-icon icon="gear-fill"></b-icon> Edit</b-button>
+  <b-button variant="danger" @click="removeReceipe(receipe)"><b-icon icon="trash-fill"></b-icon> Remove</b-button>
+  </b-button-group>`,
+  methods: {
+    editReceipe: function(receipe) {
+      this.$root.editReceipe(receipe);
+    },
+    removeReceipe: function(receipe) {
+      this.$root.removeReceipe(receipe);
+    }
+  }
+});
+
 var app = new Vue({
   el: '#app',
   data: {
@@ -23,6 +39,13 @@ var app = new Vue({
       { key: 'quantity_unit', label: 'Quantity' },
       { key: 'actions', label: 'Actions' }
     ],
+    receipe_fields: [
+      { key: 'id', label: 'ID' },
+      { key: 'receipe_name', label: 'Receipe Name' },
+      { key: 'cooking_time', label: 'Cooking Time' },
+      { key: 'ingredients', label: 'Ingredients' },
+      { key: 'actions', label: 'Actions' }
+    ],
     items: [],
     addItemForm: {
       item_name: '',
@@ -30,9 +53,27 @@ var app = new Vue({
       unit: ''
     },
     updating: false,
-    current_id: -1
+    current_id: -1,
+    receipes: []
   },
   methods: {
+    hasItem(item_name) {
+      for (var item of this.items) {
+        if (item_name === item.item_name) {
+          return true;
+        }
+      }
+      return false;
+    },
+    cookable(receipe) {
+      for (var ingredient of receipe.ingredients) {
+        if (!this.hasItem(ingredient)) {
+          return false;
+        }
+      }
+      receipe._rowVariant = 'success';
+      return true;
+    },
     getItems() {
       const path = "http://192.168.0.102:5000/getItems";
       axios.get(path)
@@ -43,15 +84,30 @@ var app = new Vue({
           console.log(error);
         });
     },
+    getReceipes() {
+      const path = "http://192.168.0.102:5000/getReceipes";
+      axios.get(path)
+        .then((res) => {
+          this.receipes = res.data;
+          for (var receipe of this.receipes) {
+            this.cookable(receipe);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     addItem(payload) {
       const path = "http://192.168.0.102:5000/addItem";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
+          this.getReceipes();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
+          this.getReceipes();
         });
     },
     editItem(item) {
@@ -64,10 +120,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
+          this.getReceipes();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
+          this.getReceipes();
         });
       this.updating = false;
     },
@@ -79,10 +137,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
+          this.getReceipes();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
+          this.getReceipes();
         });
     },
     initItemForm() {
@@ -126,5 +186,6 @@ var app = new Vue({
   },
   created: function () {
     this.getItems();
+    this.getReceipes();
   }
 })
