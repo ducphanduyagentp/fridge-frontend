@@ -33,7 +33,7 @@
 
         <b-button-group class="mt-3">
           <b-button variant="success" class="mr-2" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Item</b-button>
-          <b-button variant="success" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Receipe</b-button>
+          <b-button variant="success" v-b-modal.add-receipe-modal><b-icon icon="plus-square-fill"></b-icon> Add Receipe</b-button>
         </b-button-group>
 
 
@@ -142,6 +142,52 @@
             </b-form-input>
           </b-form-group>
 
+          <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
+          <b-button type="submit" variant="warning" v-else>Update</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
+      </b-modal>
+
+
+      <b-modal ref="addReceipeModal" id="add-receipe-modal" title="Add Receipe" @hide="resetButton" hide-footer>
+        <b-form @submit.prevent="submitAddReceipe" @reset="resetAddReceipe">
+          <b-form-group
+            id="form-receipe-name-group"
+            label="Receipe Name"
+            label-for="form-receipe-name-input">
+            <b-form-input
+              id="form-receipe-name-input"
+              type="text"
+              v-model="addReceipeForm.receipe_name"
+              required
+              placeholder="Enter Receipe Name">
+            </b-form-input>
+          </b-form-group>
+    
+          <b-form-group
+            id="form-cooking-time-group"
+            label="Cooking Time"
+            label-for="form-cooking-time-input">
+            <b-form-input
+              id="form-cooking-time-input"
+              type="number"
+              v-model="addReceipeForm.cooking_time"
+              placeholder="Enter Cooking Time (minutes)">
+            </b-form-input>
+          </b-form-group>
+    
+          <b-form-group
+            id="form-ingredients-group"
+            label="Ingredients"
+            label-for="form-ingredients-input">
+            <b-form-textarea
+              id="form-ingredients-input"
+              v-model="addReceipeForm.ingredients"
+              required
+              placeholder="Enter Ingredients">
+            </b-form-textarea>
+          </b-form-group>
+    
           <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
           <b-button type="submit" variant="warning" v-else>Update</b-button>
           <b-button type="reset" variant="danger">Reset</b-button>

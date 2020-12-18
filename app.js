@@ -52,6 +52,11 @@ var app = new Vue({
       quantity: 0,
       unit: ''
     },
+    addReceipeForm: {
+      receipe_name: '',
+      cooking_time: 0,
+      ingredients: ''
+    },
     updating: false,
     current_id: -1,
     receipes: []
@@ -110,6 +115,19 @@ var app = new Vue({
           this.getReceipes();
         });
     },
+    addReceipe(payload) {
+      const path = "http://192.168.0.102:5000/addReceipe";
+      axios.post(path, payload)
+        .then((res) => {
+          this.getItems();
+          this.getReceipes();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getItems();
+          this.getReceipes();
+        });
+    },
     editItem(item) {
       this.updating = true;
       this.editItemForm(item);
@@ -117,6 +135,25 @@ var app = new Vue({
     },
     editItemReal(payload) {
       const path = "http://192.168.0.102:5000/editItem";
+      axios.post(path, payload)
+        .then((res) => {
+          this.getItems();
+          this.getReceipes();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getItems();
+          this.getReceipes();
+        });
+      this.updating = false;
+    },
+    editReceipe(receipe) {
+      this.updating = true;
+      this.editReceipeForm(receipe);
+      this.$refs.addReceipeModal.show();
+    },
+    editReceipeReal(payload) {
+      const path = "http://192.168.0.102:5000/editReceipe";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -145,6 +182,22 @@ var app = new Vue({
           this.getReceipes();
         });
     },
+    removeReceipe(receipe) {
+      const path = "http://192.168.0.102:5000/removeReceipe";
+      const payload = {
+        id: receipe.id
+      }
+      axios.post(path, payload)
+        .then((res) => {
+          this.getItems();
+          this.getReceipes();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.getItems();
+          this.getReceipes();
+        });
+    },
     initItemForm() {
       this.addItemForm.item_name = '';
       this.addItemForm.quantity = 0;
@@ -156,6 +209,18 @@ var app = new Vue({
       this.addItemForm.quantity = item.quantity;
       this.addItemForm.unit = item.unit;
       this.current_id = item.id;
+    },
+    initReceipeForm() {
+      this.addReceipeForm.receipe_name = '';
+      this.addReceipeForm.cooking_time = 0;
+      this.addReceipeForm.ingredients = '';
+      this.current_id = -1;
+    },
+    editReceipeForm(receipe) {
+      this.addReceipeForm.receipe_name = receipe.receipe_name;
+      this.addReceipeForm.cooking_time = receipe.cooking_time;
+      this.addReceipeForm.ingredients = receipe.ingredients.join(', ');
+      this.current_id = receipe.id;
     },
     submitAddItem: function(evt) {
       evt.preventDefault();
@@ -178,10 +243,36 @@ var app = new Vue({
       this.$refs.addItemModal.hide();
       this.initItemForm();
     },
+    submitAddReceipe: function(evt) {
+      evt.preventDefault();
+      var ingredients_array = this.addReceipeForm.ingredients.split(',');
+      for (var i = 0; i < ingredients_array.length; i++) {
+        ingredients_array[i] = ingredients_array[i].trim();
+      }
+      var payload = {
+        receipe_name: this.addReceipeForm.receipe_name,
+        cooking_time: this.addReceipeForm.cooking_time,
+        ingredients: ingredients_array,
+        id: this.current_id
+      };
+      if (!this.updating) {
+        this.addReceipe(payload);
+      } else {
+        this.editReceipeReal(payload);
+      }
+      this.$refs.addReceipeModal.hide();
+      this.initReceipeForm();
+    },
+    resetAddReceipe: function(evt) {
+      evt.preventDefault();
+      this.$refs.addReceipeModal.hide();
+      this.initReceipeForm();
+    },
     resetButton: function() {
       this.updating = false;
       this.current_id = -1;
       this.initItemForm();
+      this.initReceipeForm();
     }
   },
   created: function () {
