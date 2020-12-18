@@ -44,6 +44,7 @@ var app = new Vue({
       { key: 'receipe_name', label: 'Receipe Name' },
       { key: 'cooking_time', label: 'Cooking Time' },
       { key: 'ingredients', label: 'Ingredients' },
+      { key: 'optional_ingredients', label: 'Optional Ingredients' },
       { key: 'actions', label: 'Actions' }
     ],
     items: [],
@@ -55,7 +56,8 @@ var app = new Vue({
     addReceipeForm: {
       receipe_name: '',
       cooking_time: 0,
-      ingredients: ''
+      ingredients: '',
+      optional_ingredients: ''
     },
     updating: false,
     current_id: -1,
@@ -214,12 +216,14 @@ var app = new Vue({
       this.addReceipeForm.receipe_name = '';
       this.addReceipeForm.cooking_time = 0;
       this.addReceipeForm.ingredients = '';
+      this.addReceipeForm.optional_ingredients = '';
       this.current_id = -1;
     },
     editReceipeForm(receipe) {
       this.addReceipeForm.receipe_name = receipe.receipe_name;
       this.addReceipeForm.cooking_time = receipe.cooking_time;
       this.addReceipeForm.ingredients = receipe.ingredients.join(', ');
+      this.addReceipeForm.optional_ingredients = receipe.optional_ingredients ? receipe.optional_ingredients.join(', ') : '';
       this.current_id = receipe.id;
     },
     submitAddItem: function(evt) {
@@ -249,10 +253,15 @@ var app = new Vue({
       for (var i = 0; i < ingredients_array.length; i++) {
         ingredients_array[i] = ingredients_array[i].trim();
       }
+      var optional_ingredients_array = this.addReceipeForm.optional_ingredients.split(',') || [];
+      for (var i = 0; i < optional_ingredients_array.length; i++) {
+        optional_ingredients_array[i] = optional_ingredients_array[i].trim();
+      }
       var payload = {
         receipe_name: this.addReceipeForm.receipe_name,
         cooking_time: this.addReceipeForm.cooking_time,
         ingredients: ingredients_array,
+        optional_ingredients: optional_ingredients_array,
         id: this.current_id
       };
       if (!this.updating) {

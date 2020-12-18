@@ -92,6 +92,21 @@
               </ul>
             </template>
 
+            <template #cell(optional_ingredients)="data">
+              Available:
+              <ul>
+                <li v-for="ingredient in data.item.optional_ingredients" v-if="hasItem(ingredient)">
+                  {{ ingredient }}
+                </li>
+              </ul>
+              Missing:
+              <ul>
+                <li v-for="ingredient in data.item.optional_ingredients" v-if="!hasItem(ingredient)">
+                  {{ ingredient }}
+                </li>
+              </ul>
+            </template>
+
             <template #cell(actions)="data">
               <receipe-action v-bind:receipe="data.item"></receipe-action>
             </template>
@@ -163,7 +178,7 @@
               placeholder="Enter Receipe Name">
             </b-form-input>
           </b-form-group>
-    
+
           <b-form-group
             id="form-cooking-time-group"
             label="Cooking Time"
@@ -175,10 +190,10 @@
               placeholder="Enter Cooking Time (minutes)">
             </b-form-input>
           </b-form-group>
-    
+
           <b-form-group
             id="form-ingredients-group"
-            label="Ingredients"
+            label="Required Ingredients"
             label-for="form-ingredients-input">
             <b-form-textarea
               id="form-ingredients-input"
@@ -187,7 +202,18 @@
               placeholder="Enter Ingredients">
             </b-form-textarea>
           </b-form-group>
-    
+
+          <b-form-group
+            id="form-optional-ingredients-group"
+            label="Optional Ingredients"
+            label-for="form-optional-ingredients-input">
+            <b-form-textarea
+              id="form-optional-ingredients-input"
+              v-model="addReceipeForm.optional_ingredients"
+              placeholder="Enter Optional Ingredients">
+            </b-form-textarea>
+          </b-form-group>
+
           <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
           <b-button type="submit" variant="warning" v-else>Update</b-button>
           <b-button type="reset" variant="danger">Reset</b-button>
