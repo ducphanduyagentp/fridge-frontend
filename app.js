@@ -34,7 +34,7 @@ var app = new Vue({
   },
   methods: {
     getItems() {
-      const path = "http://localhost:5000/getItems";
+      const path = "http://192.168.0.102:5000/getItems";
       axios.get(path)
         .then((res) => {
           this.items = res.data;
@@ -44,7 +44,7 @@ var app = new Vue({
         });
     },
     addItem(payload) {
-      const path = "http://localhost:5000/addItem";
+      const path = "http://192.168.0.102:5000/addItem";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -60,7 +60,7 @@ var app = new Vue({
       this.$refs.addItemModal.show();
     },
     editItemReal(payload) {
-      const path = "http://localhost:5000/editItem";
+      const path = "http://192.168.0.102:5000/editItem";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -72,7 +72,7 @@ var app = new Vue({
       this.updating = false;
     },
     removeItem(item) {
-      const path = "http://localhost:5000/removeItem";
+      const path = "http://192.168.0.102:5000/removeItem";
       const payload = {
         id: item.id
       }
@@ -121,6 +121,7 @@ var app = new Vue({
     resetButton: function() {
       this.updating = false;
       this.current_id = -1;
+      this.initItemForm();
     }
   },
   created: function () {

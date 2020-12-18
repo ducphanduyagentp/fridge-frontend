@@ -17,79 +17,97 @@
       <b-container class="mt-3">
         <h1>The Fridge</h1>
         <br><br>
+        <b-navbar toggleable="lg" variant="primary" type="dark">
+          <b-navbar-brand>The Fridge</b-navbar-brand>
+          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+          <b-collapse id="nav-collapse" is-nav>
+            <b-navbar-nav>
+              <b-nav-item v-b-toggle.collapse-1.collapse-2>Fridge Content</b-nav-item>
+              <b-nav-item v-b-toggle.collapse-1.collapse-2>Receipes</b-nav-item>
+            </b-navbar-nav>
+          </b-collapse>
+        </b-navbar>
+        <b-button-group class="mt-3">
+          <b-button variant="success" class="mr-2" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Item</b-button>
+          <b-button variant="success" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Receipe</b-button>
+        </b-button-group>
+        <b-collapse visible id="collapse-1" class="mt-3">
+          <b-modal ref="addItemModal" id="add-item-modal" title="Add Item" @hide="resetButton" hide-footer>
+            <b-form @submit.prevent="submitAddItem" @reset="resetAddItem">
+              <b-form-group
+                id="form-item-name-group"
+                label="Item Name"
+                label-for="form-item-name-input">
+                <b-form-input
+                  id="form-item-name-input"
+                  type="text"
+                  v-model="addItemForm.item_name"
+                  required
+                  placeholder="Enter Item Name">
+                </b-form-input>
+              </b-form-group>
 
-        <b-button variant="success" class="mb-3" v-b-modal.add-item-modal><b-icon icon="plus-square-fill"></b-icon> Add Item</b-button>
-        <b-modal ref="addItemModal" id="add-item-modal" title="Add Item" @hide="resetButton" hide-footer>
-          <b-form @submit.prevent="submitAddItem" @reset="resetAddItem">
-            <b-form-group
-              id="form-item-name-group"
-              label="Item Name"
-              label-for="form-item-name-input">
-              <b-form-input
-                id="form-item-name-input"
-                type="text"
-                v-model="addItemForm.item_name"
-                required
-                placeholder="Enter Item Name">
-              </b-form-input>
-            </b-form-group>
+              <b-form-group
+                id="form-quantity-group"
+                label="Quantity"
+                label-for="form-quantity-input">
+                <b-form-input
+                  id="form-quantity-input"
+                  type="number"
+                  v-model="addItemForm.quantity"
+                  required
+                  placeholder="Enter Quantity">
+                </b-form-input>
+              </b-form-group>
 
-            <b-form-group
-              id="form-quantity-group"
-              label="Quantity"
-              label-for="form-quantity-input">
-              <b-form-input
-                id="form-quantity-input"
-                type="number"
-                v-model="addItemForm.quantity"
-                required
-                placeholder="Enter Quantity">
-              </b-form-input>
-            </b-form-group>
+              <b-form-group
+                id="form-unit-group"
+                label="Unit"
+                label-for="form-unit-input">
+                <b-form-input
+                  id="form-unit-input"
+                  type="text"
+                  v-model="addItemForm.unit"
+                  required
+                  placeholder="Enter Unit">
+                </b-form-input>
+              </b-form-group>
 
-            <b-form-group
-              id="form-unit-group"
-              label="Unit"
-              label-for="form-unit-input">
-              <b-form-input
-                id="form-unit-input"
-                type="text"
-                v-model="addItemForm.unit"
-                required
-                placeholder="Enter Unit">
-              </b-form-input>
-            </b-form-group>
+              <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
+              <b-button type="submit" variant="warning" v-else>Update</b-button>
+              <b-button type="reset" variant="danger">Reset</b-button>
+            </b-form>
+          </b-modal>
 
-            <b-button type="submit" variant="primary" v-if="!updating">Submit</b-button>
-            <b-button type="submit" variant="warning" v-else>Update</b-button>
-            <b-button type="reset" variant="danger">Reset</b-button>
-          </b-form>
-        </b-modal>
+          <template>
+            <div>
+              <b-table striped hover :fields="fields" :items="items" responsive="sm">
+                <!-- A virtual column -->
+                <template #cell(id)="data">
+                  {{ data.index + 1 }}
+                </template>
 
-        <template>
-          <div>
-            <b-table striped hover :fields="fields" :items="items" responsive="sm">
-              <!-- A virtual column -->
-              <template #cell(id)="data">
-                {{ data.index + 1 }}
-              </template>
+                <!-- A custom formatted column -->
+                <template #cell(item_name)="data">
+                  {{ data.item.item_name }}
+                </template>
 
-              <!-- A custom formatted column -->
-              <template #cell(item_name)="data">
-                {{ data.item.item_name }}
-              </template>
+                <!-- A virtual composite column -->
+                <template #cell(quantity_unit)="data">
+                  {{ data.item.quantity }} {{ data.item.unit }}
+                </template>
 
-              <!-- A virtual composite column -->
-              <template #cell(quantity_unit)="data">
-                {{ data.item.quantity }} {{ data.item.unit }}
-              </template>
+                <template #cell(actions)="data">
+                  <item-action v-bind:item="data.item"></item-action>
+                </template>
+              </b-table>
+            </div>
+          </template>
+        </b-collapse>
 
-              <template #cell(actions)="data">
-                <item-action v-bind:item="data.item"></item-action>
-              </template>
-            </b-table>
-          </div>
-        </template>
+        <b-collapse id="collapse-2" class="mt-3">
+          <p>BRUH!</p>
+        </b-collapse>
       </b-container>
     </div>
 
