@@ -78,33 +78,20 @@
             </template>
 
             <template #cell(ingredients)="data">
-              Available:
-              <ul>
-                <li v-for="ingredient in data.item.ingredients" v-if="hasItem(ingredient)">
-                  {{ ingredient }}
-                </li>
-              </ul>
-              Missing:
-              <ul>
-                <li v-for="ingredient in data.item.ingredients" v-if="!hasItem(ingredient)">
-                  {{ ingredient }}
-                </li>
-              </ul>
+              <div v-for="ingredient in data.item.ingredients" v-if="hasItem(ingredient)">
+                <b-icon icon="check" style="color:green"></b-icon> {{ ingredient }}
+              <div v-for="ingredient in data.item.ingredients" v-if="!hasItem(ingredient)">
+                  <b-icon icon="x" style="color:red"></b-icon>  {{ ingredient }}
+              </div>
             </template>
 
             <template #cell(optional_ingredients)="data">
-              Available:
-              <ul>
-                <li v-for="ingredient in data.item.optional_ingredients" v-if="hasItem(ingredient)">
-                  {{ ingredient }}
-                </li>
-              </ul>
-              Missing:
-              <ul>
-                <li v-for="ingredient in data.item.optional_ingredients" v-if="!hasItem(ingredient)">
-                  {{ ingredient }}
-                </li>
-              </ul>
+              <div v-for="ingredient in data.item.optional_ingredients" v-if="hasItem(ingredient)">
+                  <b-icon icon="check" style="color:green"></b-icon> {{ ingredient }}
+              </div>
+              <div v-for="ingredient in data.item.optional_ingredients" v-if="!hasItem(ingredient)">
+                  <b-icon icon="x" style="color:red"></b-icon> {{ ingredient }}
+              </div>
             </template>
 
             <template #cell(actions)="data">
