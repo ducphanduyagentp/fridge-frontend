@@ -162,14 +162,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          //this.getReceipes();
           this.$refs.receipe_table.refresh();
           this.updating = false;
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          // this.getReceipes();
           this.$refs.receipe_table.refresh();
           this.updating = false;
         });
@@ -183,13 +181,11 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          // this.getReceipes();
           this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          // this.getReceipes();
           this.$refs.receipe_table.refresh();
         });
     },
@@ -201,13 +197,11 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          // this.getReceipes();
           this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          // this.getReceipes();
           this.$refs.receipe_table.refresh();
         });
     },
@@ -268,6 +262,9 @@ var app = new Vue({
       for (var i = 0; i < optional_ingredients_array.length; i++) {
         optional_ingredients_array[i] = optional_ingredients_array[i].trim();
       }
+      if (optional_ingredients_array[0] == "") {
+        optional_ingredients_array = [];
+      }
       var payload = {
         receipe_name: this.addReceipeForm.receipe_name,
         cooking_time: this.addReceipeForm.cooking_time,
@@ -297,6 +294,5 @@ var app = new Vue({
   },
   created: function () {
     this.getItems();
-    // this.getReceipes();
   }
 })
