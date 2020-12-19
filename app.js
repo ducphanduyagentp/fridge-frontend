@@ -112,12 +112,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         });
     },
     addReceipe(payload) {
@@ -125,12 +125,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         });
     },
     editItem(item) {
@@ -143,12 +143,12 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          this.$refs.receipe_table.refresh();
         });
       this.updating = false;
     },
