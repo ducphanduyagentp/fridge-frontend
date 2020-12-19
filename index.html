@@ -80,6 +80,7 @@
             <template #cell(ingredients)="data">
               <div v-for="ingredient in data.item.ingredients" v-if="hasItem(ingredient)">
                 <b-icon icon="check" style="color:green"></b-icon> {{ ingredient }}
+              </div>
               <div v-for="ingredient in data.item.ingredients" v-if="!hasItem(ingredient)">
                   <b-icon icon="x" style="color:red"></b-icon>  {{ ingredient }}
               </div>
