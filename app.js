@@ -81,7 +81,7 @@ var app = new Vue({
       return true;
     },
     getItems() {
-      const path = "http://192.168.0.102:5000/getItems";
+      const path = "http://localhost:5000/getItems";
       axios.get(path)
         .then((res) => {
           this.items = res.data;
@@ -91,7 +91,7 @@ var app = new Vue({
         });
     },
     getReceipes() {
-      const path = "http://192.168.0.102:5000/getReceipes";
+      const path = "http://localhost:5000/getReceipes";
       return axios.get(path)
         .then((res) => {
           this.receipes = res.data;
@@ -108,7 +108,7 @@ var app = new Vue({
         });
     },
     addItem(payload) {
-      const path = "http://192.168.0.102:5000/addItem";
+      const path = "http://localhost:5000/addItem";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -121,7 +121,7 @@ var app = new Vue({
         });
     },
     addReceipe(payload) {
-      const path = "http://192.168.0.102:5000/addReceipe";
+      const path = "http://localhost:5000/addReceipe";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -139,7 +139,7 @@ var app = new Vue({
       this.$refs.addItemModal.show();
     },
     editItemReal(payload) {
-      const path = "http://192.168.0.102:5000/editItem";
+      const path = "http://localhost:5000/editItem";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -158,7 +158,7 @@ var app = new Vue({
       this.$refs.addReceipeModal.show();
     },
     editReceipeReal(payload) {
-      const path = "http://192.168.0.102:5000/editReceipe";
+      const path = "http://localhost:5000/editReceipe";
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
@@ -176,7 +176,7 @@ var app = new Vue({
       
     },
     removeItem(item) {
-      const path = "http://192.168.0.102:5000/removeItem";
+      const path = "http://localhost:5000/removeItem";
       const payload = {
         id: item.id
       }
@@ -194,7 +194,7 @@ var app = new Vue({
         });
     },
     removeReceipe(receipe) {
-      const path = "http://192.168.0.102:5000/removeReceipe";
+      const path = "http://localhost:5000/removeReceipe";
       const payload = {
         id: receipe.id
       }
@@ -298,6 +298,5 @@ var app = new Vue({
   created: function () {
     this.getItems();
     // this.getReceipes();
-    this.$refs.receipe_table.refresh();
   }
 })
