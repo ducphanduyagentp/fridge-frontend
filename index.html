@@ -61,7 +61,7 @@
         </b-collapse>
 
         <b-collapse id="collapse-2" class="mt-3">
-          <b-table striped hover :fields="receipe_fields" :items="receipes" responsive="sm">
+          <b-table ref="receipe_table" striped hover :fields="receipe_fields" :items="getReceipes" responsive="sm">
             <!-- A virtual column -->
             <template #cell(id)="data">
               {{ data.index + 1 }}

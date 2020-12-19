@@ -78,7 +78,6 @@ var app = new Vue({
           return false;
         }
       }
-      receipe._rowVariant = 'success';
       return true;
     },
     getItems() {
@@ -93,15 +92,19 @@ var app = new Vue({
     },
     getReceipes() {
       const path = "http://192.168.0.102:5000/getReceipes";
-      axios.get(path)
+      return axios.get(path)
         .then((res) => {
           this.receipes = res.data;
           for (var receipe of this.receipes) {
-            this.cookable(receipe);
+            if(this.cookable(receipe)) {
+              receipe._rowVariant = 'success';
+            }
           }
+          return this.receipes;
         })
         .catch((error) => {
           console.log(error);
+          return [];
         });
     },
     addItem(payload) {
@@ -159,14 +162,18 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          //this.getReceipes();
+          this.$refs.receipe_table.refresh();
+          this.updating = false;
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          // this.getReceipes();
+          this.$refs.receipe_table.refresh();
+          this.updating = false;
         });
-      this.updating = false;
+      
     },
     removeItem(item) {
       const path = "http://192.168.0.102:5000/removeItem";
@@ -176,12 +183,14 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          // this.getReceipes();
+          this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          // this.getReceipes();
+          this.$refs.receipe_table.refresh();
         });
     },
     removeReceipe(receipe) {
@@ -192,12 +201,14 @@ var app = new Vue({
       axios.post(path, payload)
         .then((res) => {
           this.getItems();
-          this.getReceipes();
+          // this.getReceipes();
+          this.$refs.receipe_table.refresh();
         })
         .catch((error) => {
           console.log(error);
           this.getItems();
-          this.getReceipes();
+          // this.getReceipes();
+          this.$refs.receipe_table.refresh();
         });
     },
     initItemForm() {
@@ -286,6 +297,7 @@ var app = new Vue({
   },
   created: function () {
     this.getItems();
-    this.getReceipes();
+    // this.getReceipes();
+    this.$refs.receipe_table.refresh();
   }
 })
