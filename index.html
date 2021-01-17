@@ -47,6 +47,9 @@
             <!-- A custom formatted column -->
             <template #cell(item_name)="data">
               {{ data.item.item_name }}
+              <div v-if="data.item.ingredient_type && data.item.ingredient_type.length > 0">
+                <b-badge variant="success"> {{ data.item.ingredient_type }} </b-badge>
+              </div>
             </template>
 
             <!-- A virtual composite column -->
@@ -116,6 +119,18 @@
               v-model="addItemForm.item_name"
               required
               placeholder="Enter Item Name">
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-ingredient-type-group"
+            label="Ingredient Type"
+            label-for="form-ingredient-type-input">
+            <b-form-input
+              id="form-ingredient-type-input"
+              type="text"
+              v-model="addItemForm.ingredient_type"
+              placeholder="Enter Ingredient Type">
             </b-form-input>
           </b-form-group>
 

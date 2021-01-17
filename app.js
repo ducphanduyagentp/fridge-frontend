@@ -50,6 +50,7 @@ var app = new Vue({
     items: [],
     addItemForm: {
       item_name: '',
+      ingredient_type: '',
       quantity: 0,
       unit: ''
     },
@@ -66,7 +67,7 @@ var app = new Vue({
   methods: {
     hasItem(item_name) {
       for (var item of this.items) {
-        if (item_name === item.item_name) {
+        if (item_name === item.item_name && item.quantity > 0) {
           return true;
         }
       }
@@ -207,12 +208,14 @@ var app = new Vue({
     },
     initItemForm() {
       this.addItemForm.item_name = '';
+      this.addItemForm.ingredient_type = '';
       this.addItemForm.quantity = 0;
       this.addItemForm.unit = '';
       this.current_id = -1;
     },
     editItemForm(item) {
       this.addItemForm.item_name = item.item_name;
+      this.addItemForm.ingredient_type = item.ingredient_type;
       this.addItemForm.quantity = item.quantity;
       this.addItemForm.unit = item.unit;
       this.current_id = item.id;
@@ -235,6 +238,7 @@ var app = new Vue({
       evt.preventDefault();
       var payload = {
         item_name: this.addItemForm.item_name,
+        ingredient_type: this.addItemForm.ingredient_type,
         quantity: this.addItemForm.quantity,
         unit: this.addItemForm.unit,
         id: this.current_id
