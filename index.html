@@ -38,7 +38,7 @@
 
 
         <b-collapse visible id="collapse-1" class="mt-3">
-          <b-table striped hover :fields="fields" :items="items" responsive="sm">
+          <b-table responsive sticky-header="500px" striped hover :fields="fields" :items="items" responsive="sm">
             <!-- A virtual column -->
             <template #cell(id)="data">
               {{ data.index + 1 }}
@@ -82,7 +82,7 @@
 
             <template #cell(ingredients)="data">
               <div v-for="ingredient in data.item.ingredients" v-if="hasItem(ingredient)">
-                <b-icon icon="check" style="color:green"></b-icon> {{ ingredient }}
+                <b-icon icon="check" style="color:green"></b-icon> {{ getItemChoices(ingredient) }}
               </div>
               <div v-for="ingredient in data.item.ingredients" v-if="!hasItem(ingredient)">
                   <b-icon icon="x" style="color:red"></b-icon>  {{ ingredient }}
@@ -91,7 +91,7 @@
 
             <template #cell(optional_ingredients)="data">
               <div v-for="ingredient in data.item.optional_ingredients" v-if="hasItem(ingredient)">
-                  <b-icon icon="check" style="color:green"></b-icon> {{ ingredient }}
+                  <b-icon icon="check" style="color:green"></b-icon> {{ getItemChoices(ingredient) }}
               </div>
               <div v-for="ingredient in data.item.optional_ingredients" v-if="!hasItem(ingredient)">
                   <b-icon icon="x" style="color:red"></b-icon> {{ ingredient }}

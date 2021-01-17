@@ -62,10 +62,27 @@ var app = new Vue({
     },
     updating: false,
     current_id: -1,
-    receipes: []
+    receipes: [],
+    getItemChoices(item_name) {
+      if (!item_name.startsWith('any of')) {
+        return item_name;
+      }
+      let ingredient_type = item_name.slice('any of '.length);
+      let choices = [];
+      for (var item of this.items) {
+        if (item.ingredient_type == ingredient_type) {
+          choices.push(item.item_name);
+        }
+      }
+      return choices.join(' / ');
+    },
   },
   methods: {
     hasItem(item_name) {
+      if (item_name.startsWith('any of')) {
+        let choices = this.getItemChoices(item_name);
+        return choices.length > 0;
+      }
       for (var item of this.items) {
         if (item_name === item.item_name && item.quantity > 0) {
           return true;
